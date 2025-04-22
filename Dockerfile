@@ -4,6 +4,8 @@ FROM python:3.9-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=face_login_project.settings
+
 
 # Install dependencies for dlib and face_recognition
 RUN apt-get update && apt-get install -y \
