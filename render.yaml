@@ -4,11 +4,12 @@ services:
     env: docker
     plan: free
     region: oregon
-    branch: main  # or your branch name
+    branch: main  # Change if your branch is different
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /
     envVars:
       - key: DJANGO_SECRET_KEY
-        value: your_secret_key_here
+        value: )5uiel=zqh0s2658msi7=i6p!*lp7btx*=l5cwsj9pjihaa&$@  # Replace with a real secret key
       - key: DEBUG
         value: "False"
       - key: DATABASE_URL
@@ -16,9 +17,13 @@ services:
           name: django-db
           property: connectionString
       - key: ALLOWED_HOSTS
-        value: "your-app-name.onrender.com"
-    buildCommand: ""
-    startCommand: ""
+        value: "django-face-login.onrender.com"  # Your Render domain
+      - key: DJANGO_SETTINGS_MODULE
+        value: face_login_project.settings  # Replace with your actual settings path
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONDONTWRITEBYTECODE
+        value: "1"
 
 databases:
   - name: django-db
