@@ -1,28 +1,34 @@
-# Dockerfile for Django + dlib + face_recognition
+# Dockerfile
 FROM python:3.10-slim
 
-# Install system dependencies required for dlib and face_recognition
+# Install system dependencies for dlib & face_recognition
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
-    libboost-all-dev \
     libopenblas-dev \
     liblapack-dev \
     libx11-dev \
-    && rm -rf /var/lib/apt/lists/*
+    libgtk-3-dev \
+    libboost-all-dev \
+    libssl-dev \
+    git \
+    && apt-get clean
 
-# Set working directory
+# Set work directory
 WORKDIR /app
 
-# Copy the entire project
+# Copy all project files
 COPY . /app
 
 # Install Python dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expose port 8000 for the Django app
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose the application port
 EXPOSE 8000
 
-# Start the Django application using Gunicorn
+# Start the Django app with Gunicorn
 CMD ["gunicorn", "face_login_project.wsgi:application", "--bind", "0.0.0.0:8000"]
